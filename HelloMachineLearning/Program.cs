@@ -11,7 +11,7 @@ namespace HelloMachineLearning
         static void Main(string[] args)
         {
             int lengthOfName = 5; //Enter desired length of your new name
-            int accuracy = 60; //Enter desired accuract of letter selection
+            int accuracy = 60; //Enter desired accuracy of letter selection
 
             string alphabet = "abcdefghijklmnopqrstuvwxyzåäö";
             int[,] combinationScore = new int[alphabet.Length, alphabet.Length];
