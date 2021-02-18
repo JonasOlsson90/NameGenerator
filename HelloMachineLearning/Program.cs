@@ -10,8 +10,15 @@ namespace HelloMachineLearning
     {
         static void Main(string[] args)
         {
-            int lengthOfName = 5; //Enter desired length of your new name
-            int accuracy = 60; //Enter desired accuracy of letter selection
+            //string s = $"{GenerateNewName(3, 60)}-{GenerateNewName(5, 60)}";
+
+            Console.WriteLine(GenerateNewName(5, 300));
+
+            Console.ReadLine();
+        }
+
+        private static string GenerateNewName(int lengthOfName, int accuracy)
+        {
 
             string alphabet = "abcdefghijklmnopqrstuvwxyzåäö";
             int[,] combinationScore = new int[alphabet.Length, alphabet.Length];
@@ -19,10 +26,9 @@ namespace HelloMachineLearning
             var random = new Random();
             string newName = "";
 
-
             string[] names = File.ReadAllLines(path);
 
-            
+
 
             foreach (string name in names)
             {
@@ -35,7 +41,9 @@ namespace HelloMachineLearning
 
             newName += alphabet[random.Next(0, alphabet.Length)];
 
-            for (int i = 0; i < lengthOfName; i++)
+            int start = Environment.TickCount;
+
+            for (int i = 0; i < lengthOfName - 1; i++)
             {
 
                 char temp = alphabet[random.Next(0, alphabet.Length)];
@@ -45,13 +53,15 @@ namespace HelloMachineLearning
 
                 else
                     i--;
+
+                if (Environment.TickCount - start > 1000)
+                    break;
             }
 
+            if (Environment.TickCount - start > 1000)
+                return GenerateNewName(lengthOfName, accuracy);
 
-
-            Console.WriteLine(newName);
-
-            Console.ReadLine();
+            return newName;
         }
     }
 }
