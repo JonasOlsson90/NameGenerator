@@ -10,11 +10,29 @@ namespace HelloMachineLearning
     {
         static void Main(string[] args)
         {
-            //string s = $"{GenerateNewName(3, 60)}-{GenerateNewName(5, 60)}";
+            string lengthInput = "";
+            string accuracyInput;
 
-            Console.WriteLine(GenerateNewName(5, 300));
+            while (lengthInput != "q" && lengthInput != "Q")
+            {
+                Console.WriteLine("Enter Q to exit application");
+                Console.Write("Enter desired length of generated name: ");
+                lengthInput = Console.ReadLine();
+                if (Int32.TryParse(lengthInput, out int num))
+                {
+                    Console.Write("Enter desired accuracy (recommended value is 300): ");
+                    accuracyInput = Console.ReadLine();
+                    Console.WriteLine();
 
-            Console.ReadLine();
+
+                    if (Int32.TryParse(accuracyInput, out int acc))
+                        Console.WriteLine(GenerateNewName(num, acc));  //Maybe capitalize names in future, not hard but I don't have time atm
+                    else
+                        Console.WriteLine("No valid input");
+
+                    Console.ReadLine();
+                }
+            }
         }
 
         private static string GenerateNewName(int lengthOfName, int accuracy)
