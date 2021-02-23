@@ -20,13 +20,13 @@ namespace HelloMachineLearning
                 lengthInput = Console.ReadLine();
                 if (Int32.TryParse(lengthInput, out int num))
                 {
-                    Console.Write("Enter desired accuracy (recommended value is 300): ");
+                    Console.Write("Enter desired accuracy (recommended value is 600): ");
                     accuracyInput = Console.ReadLine();
                     Console.WriteLine();
 
 
                     if (Int32.TryParse(accuracyInput, out int acc))
-                        Console.WriteLine(GenerateNewName(num, acc));  //Maybe capitalize names in future, not hard but I don't have time atm
+                        Console.WriteLine(GenerateNewName(num, acc));
                     else
                         Console.WriteLine("No valid input");
 
@@ -45,7 +45,6 @@ namespace HelloMachineLearning
             string newName = "";
 
             string[] names = File.ReadAllLines(path);
-
 
 
             foreach (string name in names)
@@ -79,7 +78,7 @@ namespace HelloMachineLearning
             if (Environment.TickCount - start > 1000)
                 return GenerateNewName(lengthOfName, accuracy);
 
-            return newName;
+            return newName;     //Capitalize before return?
         }
     }
 }
