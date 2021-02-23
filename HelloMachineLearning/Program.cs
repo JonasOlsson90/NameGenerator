@@ -1,8 +1,5 @@
 ﻿using System;
-using Microsoft.ML;
 using System.IO;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace HelloMachineLearning
 {
@@ -15,13 +12,17 @@ namespace HelloMachineLearning
 
             while (lengthInput != "q" && lengthInput != "Q")
             {
-                Console.WriteLine("Enter Q to exit application");
+                Console.WriteLine("Enter Q to exit application\nLeave blank or enter 0 for random length");
                 Console.Write("Enter desired length of generated name: ");
                 lengthInput = Console.ReadLine();
+                if (String.IsNullOrEmpty(lengthInput))
+                    lengthInput = "0";
                 if (Int32.TryParse(lengthInput, out int num))
                 {
-                    Console.Write("Enter desired accuracy (recommended value is 500): ");
+                    Console.Write("Enter desired accuracy (default value is 500 if left blank): ");
                     accuracyInput = Console.ReadLine();
+                    if (String.IsNullOrEmpty(accuracyInput))
+                        accuracyInput = "500";
                     Console.WriteLine();
 
 
@@ -46,6 +47,8 @@ namespace HelloMachineLearning
 
             string[] names = File.ReadAllLines(path);
 
+            if (lengthOfName == 0)
+                lengthOfName = random.Next(2, 10);
 
             foreach (string name in names)
             {
