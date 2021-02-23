@@ -51,8 +51,8 @@ namespace HelloMachineLearning
             {
                 for (int i = 1; i < name.Length; i++)
                 {
-                    if (alphabet.Contains(name[i - 1]) && alphabet.Contains(name[i]))
-                        combinationScore[alphabet.IndexOf(name[i - 1]), alphabet.IndexOf(name[i])]++;
+                    if (alphabet.Contains(Char.ToLower(name[i - 1])) && alphabet.Contains(Char.ToLower(name[i])))
+                        combinationScore[alphabet.IndexOf(Char.ToLower(name[i - 1])), alphabet.IndexOf(Char.ToLower(name[i]))]++;
                 }
             }
 
@@ -86,7 +86,10 @@ namespace HelloMachineLearning
                 }
             }
 
-            return newName;     //Capitalize before return?
+            if (lengthOfName > 1)
+                newName = Char.ToUpper(newName[0]) + newName[1..];
+
+            return newName;
         }
     }
 }
