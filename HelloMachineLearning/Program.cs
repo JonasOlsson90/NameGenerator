@@ -20,7 +20,7 @@ namespace HelloMachineLearning
                 lengthInput = Console.ReadLine();
                 if (Int32.TryParse(lengthInput, out int num))
                 {
-                    Console.Write("Enter desired accuracy (recommended value is 600): ");
+                    Console.Write("Enter desired accuracy (recommended value is 500): ");
                     accuracyInput = Console.ReadLine();
                     Console.WriteLine();
 
@@ -77,6 +77,14 @@ namespace HelloMachineLearning
 
             if (Environment.TickCount - start > 1000)
                 return GenerateNewName(lengthOfName, accuracy);
+
+            for (int i = 0; i < newName.Length - 2; i++)
+            {
+                if (newName[i] == newName[i + 1] && newName[i] == newName[i + 2])
+                {
+                    return GenerateNewName(lengthOfName, accuracy);
+                }
+            }
 
             return newName;     //Capitalize before return?
         }
