@@ -5,29 +5,36 @@ namespace HelloMachineLearning
 {
     class Program
     {
-        static void Main(string[] args)
+        private const string Alphabet = "abcdefghijklmnopqrstuvwxyzåäö";
+        private static readonly Random random = new Random();
+
+        static void Main()
         {
             string lengthInput = "";
             string accuracyInput;
+            int[,] combinationScore = FindPatterns();
 
             while (lengthInput != "q" && lengthInput != "Q")
             {
-                Console.WriteLine("Enter Q to exit application\nLeave blank or enter 0 for random length");
+                Console.WriteLine("Enter Q to exit application\nLeave blank for random length (2-9 characters)");
                 Console.Write("Enter desired length of generated name: ");
                 lengthInput = Console.ReadLine();
+
                 if (String.IsNullOrEmpty(lengthInput))
-                    lengthInput = "0";
+                    lengthInput = Convert.ToString(random.Next(2, 10));
+
                 if (Int32.TryParse(lengthInput, out int num))
                 {
                     Console.Write("Enter desired accuracy (default value is 500 if left blank): ");
                     accuracyInput = Console.ReadLine();
+
                     if (String.IsNullOrEmpty(accuracyInput))
                         accuracyInput = "500";
+
                     Console.WriteLine();
 
-
                     if (Int32.TryParse(accuracyInput, out int acc))
-                        Console.WriteLine(GenerateNewName(num, acc));
+                        Console.WriteLine(GenerateNewName(num, acc, combinationScore));
                     else
                         Console.WriteLine("No valid input");
 
@@ -36,39 +43,38 @@ namespace HelloMachineLearning
             }
         }
 
-        private static string GenerateNewName(int lengthOfName, int accuracy)
+        private static int[,] FindPatterns()
         {
-
-            string alphabet = "abcdefghijklmnopqrstuvwxyzåäö";
-            int[,] combinationScore = new int[alphabet.Length, alphabet.Length];
+            int[,] combinationScore = new int[Alphabet.Length, Alphabet.Length];
             string path = AppDomain.CurrentDomain.BaseDirectory + "/SwedishFirstNames";
-            var random = new Random();
-            string newName = "";
-
             string[] names = File.ReadAllLines(path);
-
-            if (lengthOfName == 0)
-                lengthOfName = random.Next(2, 10);
 
             foreach (string name in names)
             {
                 for (int i = 1; i < name.Length; i++)
                 {
-                    if (alphabet.Contains(Char.ToLower(name[i - 1])) && alphabet.Contains(Char.ToLower(name[i])))
-                        combinationScore[alphabet.IndexOf(Char.ToLower(name[i - 1])), alphabet.IndexOf(Char.ToLower(name[i]))]++;
+                    if (Alphabet.Contains(Char.ToLower(name[i - 1])) && Alphabet.Contains(Char.ToLower(name[i])))
+                        combinationScore[Alphabet.IndexOf(Char.ToLower(name[i - 1])), Alphabet.IndexOf(Char.ToLower(name[i]))]++;
                 }
             }
 
-            newName += alphabet[random.Next(0, alphabet.Length)];
+            return combinationScore;
+        }
+
+        private static string GenerateNewName(int lengthOfName, int accuracy, int[,] combinationScore)
+        {
+            string newName = "";
+
+            newName += Alphabet[random.Next(0, Alphabet.Length)];
 
             int start = Environment.TickCount;
 
             for (int i = 0; i < lengthOfName - 1; i++)
             {
 
-                char temp = alphabet[random.Next(0, alphabet.Length)];
+                char temp = Alphabet[random.Next(0, Alphabet.Length)];
 
-                if (combinationScore[alphabet.IndexOf(newName[i]), alphabet.IndexOf(temp)] > accuracy)
+                if (combinationScore[Alphabet.IndexOf(newName[i]), Alphabet.IndexOf(temp)] > accuracy)
                     newName += temp;
 
                 else
@@ -79,13 +85,13 @@ namespace HelloMachineLearning
             }
 
             if (Environment.TickCount - start > 1000)
-                return GenerateNewName(lengthOfName, accuracy);
+                return GenerateNewName(lengthOfName, accuracy, combinationScore);
 
             for (int i = 0; i < newName.Length - 2; i++)
             {
                 if (newName[i] == newName[i + 1] && newName[i] == newName[i + 2])
                 {
-                    return GenerateNewName(lengthOfName, accuracy);
+                    return GenerateNewName(lengthOfName, accuracy, combinationScore);
                 }
             }
 
