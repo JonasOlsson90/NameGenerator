@@ -96,7 +96,7 @@ namespace HelloMachineLearning
             }
 
             if (lengthOfName > 1)
-                newName = Char.ToUpper(newName[0]) + newName[1..];
+                newName = Char.ToUpper(newName[0]) + newName.Substring(1);
 
             return newName;
         }
